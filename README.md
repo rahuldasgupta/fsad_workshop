@@ -1,4 +1,4 @@
-# nit_nagaland
+# NIT_Nagaland
 Workshop Demo App
 
 
