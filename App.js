@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, TextInput } from "react-native";
+import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -14,17 +15,20 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={{backgroundColor: "#7540ee", flex: 1}}>
-        <View style={{marginTop: 60, justifyContent:"space-between", flexDirection:"row"}}>
+        <View style={{marginTop: 60, flexDirection:"row", justifyContent:"space-between"}}>
           <MaterialIcons name="arrow-back-ios" style={{marginLeft: 15}} size={24} color="white" />
           <Text style={{color:"white", fontSize: 24,}}>Sign Up</Text>
           <FontAwesome name="navicon" style={{marginRight: 15}} size={25} color="white" />
-          
         </View>
         <Text style={{fontSize: 30, color:"white", textAlign:"center", marginTop: 80}}>What is your name?</Text>
         <Image
           style={{height: 320, width: 320, alignSelf:"center"}}
           source={{uri: "https://i.ibb.co/0Qct3vS/Conference.png"}}
         />
+        <TextInput
+          placeholder="Enter your name"
+          style={{backgroundColor:"white", height: 50, width:"90%", marginLeft:"5%", paddingLeft: 15}}
+        ></TextInput>
       </View>
     )
   }
