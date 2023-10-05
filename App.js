@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { View, Image, Text, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
-import { MaterialIcons, Feather, Ionicons } from '@expo/vector-icons';
+import { MaterialIcons, Feather, Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import * as NavigationBar from 'expo-navigation-bar';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,7 +10,6 @@ import { Audio } from 'expo-av';
 
 let gender = "Male"
 let name = "Rahul DasGupta"
-let isSongPlaying = false
 let sound = null
 
 function App() {
@@ -147,7 +147,10 @@ export default function spotify(){
   /*<Lottie source={require('./assets/profile.json')} style={{height: 300, width:"100%", justifyContent:"center", alignItems:"center", alignSelf:"center"}} autoPlay loop />*/
   NavigationBar.setBackgroundColorAsync("#11132b");
   NavigationBar.setButtonStyleAsync("light");
-
+  
+  const [isSongPlaying, updateIsSongPlaying] = useState(false);
+  const [songPlayingName, updateSongPlayingName] = useState("");
+  
   buttonPressed = () => {
     alert("Button Was Pressed")
   }
@@ -161,16 +164,22 @@ export default function spotify(){
       await sound.loadAsync(require('./assets/Perfect.mp3'), {shouldPlay: true});
       await sound.setPositionAsync(0);
       await sound.playAsync();
-      isSongPlaying = true
+      updateIsSongPlaying(true)
+      updateSongPlayingName("Perfect")
     }
     else if(songName == "Ilahi"){
       sound = new Audio.Sound();
       await sound.loadAsync(require('./assets/Ilahi.mp3'), {shouldPlay: true});
       await sound.setPositionAsync(0);
       await sound.playAsync();
-      isSongPlaying = true
+      updateIsSongPlaying(true)
+      updateSongPlayingName("Ilahi")
     }
     
+  }
+  stopMusic = async() => {
+    await sound.stopAsync();
+    updateIsSongPlaying(false)
   }
   return(
     <View style={{flex: 1}}>
@@ -183,7 +192,7 @@ export default function spotify(){
             gender == "Male" ?
               <Image
                 source={require('./assets/male.png')}
-                style={{height: 100, width: 100, marginTop:"17%", justifyContent:"center", alignItems:"center", alignSelf:"center"}}
+                style={{height: 100, width: 100, marginTop:"17%", borderWidth: 1.6, borderRadius: 100, borderColor:"#FFF", justifyContent:"center", alignItems:"center", alignSelf:"center"}}
               ></Image>
               :
               <></>
@@ -206,7 +215,7 @@ export default function spotify(){
             :
               <></>
           }
-          <Text style={{color:"#fff", marginTop: -50, textAlign:"center", fontWeight:"bold", fontSize: 24}}>{name}</Text>
+          <Text style={{color:"#fff", marginTop: 10, textAlign:"center", fontWeight:"bold", fontSize: 24}}>{name}</Text>
           <View style={{flexDirection:"row", justifyContent:"space-evenly", marginTop:"7%"}}>
             <View>
               <Text style={{color: "#fff", fontSize: 20, textAlign:"center", fontWeight:"bold"}}>10</Text>
@@ -301,11 +310,20 @@ export default function spotify(){
             </View>
             <View style={{flexDirection:"row"}}>
               <Feather name="heart" size={24} color="white" style={{marginRight: 17, marginTop: 18}} />
-              <TouchableOpacity onPress={() => playMusic("Perfect")}>
-                <View style={{height: 50, width: 50, backgroundColor:"white", justifyContent:"center", alignItems:"center", alignSelf:"center", borderRadius: 100, marginTop: "15%", marginRight:"5%"}}>
-                  <Ionicons name="play" size={28} color="#193277" />
-                </View>
-              </TouchableOpacity>
+              {
+                isSongPlaying == true && songPlayingName == "Perfect" ?
+                <TouchableOpacity onPress={() => stopMusic()}>
+                  <View style={{height: 50, width: 50, backgroundColor:"white", justifyContent:"center", alignItems:"center", alignSelf:"center", borderRadius: 100, marginTop: "15%", marginRight:"5%"}}>
+                    <FontAwesome5 name="stop" size={22} color="#193277" />
+                  </View>
+                </TouchableOpacity>
+                :
+                <TouchableOpacity onPress={() => playMusic("Perfect")}>
+                  <View style={{height: 50, width: 50, backgroundColor:"white", justifyContent:"center", alignItems:"center", alignSelf:"center", borderRadius: 100, marginTop: "15%", marginRight:"5%"}}>
+                    <Ionicons name="play" size={28} color="#193277" />
+                  </View>
+                </TouchableOpacity>
+              }
             </View>
           </View>
           <View style={{flexDirection:"row", justifyContent:"space-between", marginTop: 8}}>
@@ -318,11 +336,20 @@ export default function spotify(){
             </View>
             <View style={{flexDirection:"row"}}>
               <Feather name="heart" size={24} color="white" style={{marginRight: 17, marginTop: 18}} />
-              <TouchableOpacity onPress={() => playMusic("Ilahi")}>
-                <View style={{height: 50, width: 50, backgroundColor:"white", justifyContent:"center", alignItems:"center", alignSelf:"center", borderRadius: 100, marginTop: "15%", marginRight:"5%"}}>
-                  <Ionicons name="play" size={28} color="#193277" />
-                </View>
-              </TouchableOpacity>
+              {
+                isSongPlaying == true && songPlayingName == "Ilahi" ?
+                <TouchableOpacity onPress={() => stopMusic()}>
+                  <View style={{height: 50, width: 50, backgroundColor:"white", justifyContent:"center", alignItems:"center", alignSelf:"center", borderRadius: 100, marginTop: "15%", marginRight:"5%"}}>
+                    <FontAwesome5 name="stop" size={22} color="#193277" />
+                  </View>
+                </TouchableOpacity>
+                :
+                <TouchableOpacity onPress={() => playMusic("Ilahi")}>
+                  <View style={{height: 50, width: 50, backgroundColor:"white", justifyContent:"center", alignItems:"center", alignSelf:"center", borderRadius: 100, marginTop: "15%", marginRight:"5%"}}>
+                    <Ionicons name="play" size={28} color="#193277" />
+                  </View>
+                </TouchableOpacity>
+              }
             </View>
           </View>
           <View style={{flexDirection:"row", justifyContent:"space-between", marginTop: 8}}>
